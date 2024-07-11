@@ -207,5 +207,7 @@ export const callMainApi = callApi.create({
     token: localStorage.getItem("token")
   },
  
-  baseURL:"http://127.0.0.1:8000/api/v1"
+  baseURL:"https://exchange-tan.vercel.app/api/v1"
 })
+
+''
