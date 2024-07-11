@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
                             <a href="/" className="text-gray-700 hover:text-green-600 transition duration-300">Home</a>
                             <a href="/about" className="text-gray-700 hover:text-green-600 transition duration-300">About</a>
                             <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">FAQs</a>
-                            <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">Contact</a>
+                            <a href="/contact-us" className="text-gray-700 hover:text-green-600 transition duration-300">Contact</a>
                         </nav>
                         <div className='hidden md:flex'>
                         	<a href='/login'
@@ -36,10 +36,10 @@ const Layout = ({ children }) => {
                 </div>
                 {menuOpen && (
                     <div className="md:hidden animate-slide-fade">
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Home</a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Market</a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Portfolio</a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Contact</a>
+                        <a href="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Home</a>
+                        <a href="/about" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">About </a>
+                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Faq </a>
+                        <a href="/contact-us" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Contact</a>
                     </div>
                 )}
             </header>
