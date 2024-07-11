@@ -1,5 +1,5 @@
 from django.urls import path 
-from .views import UserSignup,LoginView,UserProfileView,OTPView,WithdrawalView,DepositView,TransactionView
+from .views import UserSignup,LoginView,UserProfileView,OTPView,WithdrawalView,DepositView,TransactionView,ForgotPassword
 urlpatterns = [
 	path("auth/register",UserSignup.as_view()),
 	path('auth/login',LoginView.as_view()),
@@ -9,7 +9,8 @@ urlpatterns = [
 	path("account/withdraw",WithdrawalView.as_view()),
 	path("account/deposit",DepositView.as_view()),
     path("account/transaction/<uuid:id>",TransactionView.as_view()),
-    path("account/transaction",TransactionView.as_view())
+    path("account/transaction",TransactionView.as_view()),
+    path("set-password",ForgotPassword.as_view())
 
 
     

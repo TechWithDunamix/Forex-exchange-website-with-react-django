@@ -13,6 +13,7 @@ from django.utils.crypto import get_random_string
 from .utils import Authenticator
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny,IsAuthenticated
+from django.core.mail import send_mail
 class UserSignup(generics.GenericAPIView):
 	serializer_class = UserSerializer
 
@@ -103,7 +104,14 @@ class OTPView(generics.GenericAPIView):
 		if not otp.exists():
 			code = get_random_string(8)
 			new_otp = OTP.objects.create(user = request.user,code = code,purpose = request.data.get("purpose"))
-			print(code)
+			body = f''' Your OTP verification code is {new_otp} with purpose of {new_otp.purpose}'''
+			send_mail(
+			'OTP verify from Ex chabge',
+			body,
+			'exhange.app@gmail.com',  # From email
+			[request.user.email],  # To email
+			fail_silently=False,
+			)
 		response = {
 			"detail":"OTP sent completed"
 		}
@@ -180,3 +188,17 @@ class TransactionView(generics.GenericAPIView):
 			serializer = self.get_serializer_class()(instance = obj)
 
 		return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class ForgotPassword(generics.GenericAPIView):
+	serializer_class = LoginSerializer
+
+	def post(self,request,*args,**kwargs):
+		email = request.data.get("email")
+		password = request.data.get("password")
+		if password is None:
+			return Response({"error":"Password must me provided"},status = status.HTTP_400_BAD_REQUEST)
+		user = get_object_or_404(User,email = email)
+		user.set_password(password)
+		user.save()
+		return Response({"detail":"success"},status=status.HTTP_200_OK)

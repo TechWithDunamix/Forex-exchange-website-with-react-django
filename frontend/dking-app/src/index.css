@@ -5,6 +5,9 @@
 p{
   font-family: "Rubik";
 }
+a{
+  font-family: "Rubik"
+}
 @keyframes spin{
     0%{
       transform: rotate(0deg);
@@ -21,6 +24,49 @@ p{
   animation-iteration-count: infinite;
   /*background-color: red*/
 
+}
+@keyframes hero-animate-up{
+  from{
+    transform: translateY(206px);
+  }
+  to{
+    transform: translateZ(40px);
+  }
+}
+.animate-slide-down{
+  animation-name:  hero-animate-up;
+  animation-duration: 1s;
+  /*animation-iteration-count: once;*/
+}
+
+@keyframes right{
+  from{
+    transform: translateX(206px);
+  }
+  to{
+    transform: translateZ(40px);
+  }
+}
+.animate-slide-right{
+  animation-name:  right;
+  animation-duration: 1s;
+  /*animation-iteration-count: once;*/
+}
+
+
+@keyframes fade{
+  from{
+      opacity: 0.5;
+      scale:0.5;
+  }
+  to{
+    transform: translateZ(40px);
+  }
+}
+.animate-slide-fade{
+  animation-name:  fade;
+  animation-duration: 1s;
+  /*animation-iteration-count: once;*/
 }
 
 

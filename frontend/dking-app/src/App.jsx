@@ -10,6 +10,10 @@ import WithdrawPage from './pages/withdrawPage'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import DepositPage from './pages/depositPage.jsx'
 import History from './pages/history.jsx'
+import AboutPage from './pages/about'
+import ContactPage from './pages/contact.jsx'
+import LoginForm from './pages/loginPage.jsx'
+import SetPasswordPage from './pages/resetPassword.jsx'
 function App() {
   const [count, setCount] = useState(0)
 
@@ -24,6 +28,13 @@ function App() {
           <Route path='/withdraw' element={<WithdrawPage />} />
           <Route path='/deposit' element={<DepositPage />} />
           <Route path='/history' element={<History />} />
+          <Route path='/about' element={<AboutPage />} />
+          <Route path='/contact-us' element={<ContactPage />} />
+          <Route path='/login' element={<LoginForm />} />
+          <Route path='/forgot-password' element={<SetPasswordPage />} />
+
+
+
 
 
 
@@ -35,5 +46,6 @@ function App() {
 }
 
 export default App
+
 
 

@@ -12,16 +12,16 @@ const Layout = ({ children }) => {
                             EX<span className='text-red-800'>change</span>
                         </div>
                         <nav className="hidden md:flex space-x-4">
-                            <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">Home</a>
-                            <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">Market</a>
-                            <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">Portfolio</a>
+                            <a href="/" className="text-gray-700 hover:text-green-600 transition duration-300">Home</a>
+                            <a href="/about" className="text-gray-700 hover:text-green-600 transition duration-300">About</a>
+                            <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">FAQs</a>
                             <a href="#" className="text-gray-700 hover:text-green-600 transition duration-300">Contact</a>
                         </nav>
                         <div className='hidden md:flex'>
-                        	<a href='/signup'
+                        	<a href='/login'
                         	className='shadow-md shadow-green-900 py-2 px-4 bg-green-600 mx-2 text-white rounded-[5px]'>Login</a>
 
-                        	<a className='py-2 px-4 bg-green-300 mx-2 rounded-[5px]'>SignUp</a>
+                        	<a  href= '/signup' className='py-2 px-4 bg-green-300 mx-2 rounded-[5px]'>SignUp</a>
 
                         </div>
 
@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
                     </div>
                 </div>
                 {menuOpen && (
-                    <div className="md:hidden">
+                    <div className="md:hidden animate-slide-fade">
                         <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Home</a>
                         <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Market</a>
                         <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-green-600 hover:text-white transition duration-300">Portfolio</a>

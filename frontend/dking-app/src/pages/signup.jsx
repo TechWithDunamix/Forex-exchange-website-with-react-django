@@ -25,6 +25,8 @@ const SignupForm = () => {
         message.success("Sbmited");
         localStorage.setItem("token",request.data.token)
         // localStorage.setItem("user_email",request.data)
+        localStorage.removeItem("userEmail")
+
         console.log(request)
         window.location.href  = '/dashboard'
         return ;
