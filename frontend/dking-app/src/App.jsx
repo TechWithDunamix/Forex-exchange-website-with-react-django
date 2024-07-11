@@ -14,6 +14,7 @@ import AboutPage from './pages/about'
 import ContactPage from './pages/contact.jsx'
 import LoginForm from './pages/loginPage.jsx'
 import SetPasswordPage from './pages/resetPassword.jsx'
+const isAuth = localStorage.getItem("token")
 function App() {
   const [count, setCount] = useState(0)
 
@@ -23,11 +24,11 @@ function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path='/signup' element={<SignupForm />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/withdraw' element={<WithdrawPage />} />
-          <Route path='/deposit' element={<DepositPage />} />
-          <Route path='/history' element={<History />} />
+          <Route path='/dashboard' element={isAuth ? <Dashboard /> : <LoginForm />} />
+          <Route path='/profile' element={isAuth ? <ProfilePage /> : <LoginForm />} />
+          <Route path='/withdraw' element={isAuth ? <WithdrawPage /> : <LoginForm />} />
+          <Route path='/deposit' element={isAuth ? <DepositPage /> : <LoginForm /> } />
+          <Route path='/history' element={isAuth ?  <History /> : <LoginForm /> } />
           <Route path='/about' element={<AboutPage />} />
           <Route path='/contact-us' element={<ContactPage />} />
           <Route path='/login' element={<LoginForm />} />
