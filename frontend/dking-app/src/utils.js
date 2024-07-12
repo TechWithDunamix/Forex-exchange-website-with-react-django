@@ -208,6 +208,11 @@ export const callMainApi = callApi.create({
   },
  
   baseURL:"https://exchange-tan.vercel.app/api/v1"
+  // baseURL:"http://localhost:8000/api/v1"
+
 })
 
-''
+export const callTestApi = async (url,_options) => {
+  const BASE_URL = 'http://localhost:8000/api/v1'
+  const req = fetch("")
+}

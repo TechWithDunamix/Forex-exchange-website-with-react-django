@@ -14,6 +14,11 @@ import AboutPage from './pages/about'
 import ContactPage from './pages/contact.jsx'
 import LoginForm from './pages/loginPage.jsx'
 import SetPasswordPage from './pages/resetPassword.jsx'
+import AdminHome from './admin/home.jsx'
+import UsersPage from './admin/userPage.jsx'
+import AdminDepositPage from './admin/depositpage.jsx'
+import AdminWIthdrawalsPage from './admin/withdrawPage.jsx'
+import OtpPage from './admin/otps.jsx'
 const isAuth = localStorage.getItem("token")
 function App() {
   const [count, setCount] = useState(0)
@@ -33,6 +38,19 @@ function App() {
           <Route path='/contact-us' element={<ContactPage />} />
           <Route path='/login' element={<LoginForm />} />
           <Route path='/forgot-password' element={<SetPasswordPage />} />
+
+
+          {/*  Admin urls */}
+
+          <Route path='/admin-home' element={<AdminHome />} />
+          <Route path='/admin/users' element={<UsersPage />} />
+          <Route path='/admin/deposits' element={<AdminDepositPage />} />
+          <Route path='/admin/withdrawals' element={<AdminWIthdrawalsPage />} />
+          <Route path='/admin/otps' element={<OtpPage />} />
+
+
+
+          
 
 
 
