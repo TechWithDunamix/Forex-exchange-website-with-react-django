@@ -6,8 +6,9 @@ const DepositCard = ({ deposit, onConfirm }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl">
       <h3 className="text-lg font-semibold">{deposit.user.username}</h3>
-      <p className="text-gray-500">Amount: ${deposit.amount}</p>
+      <p className="text-gray-500">Amount: ${deposit.amount.toLocaleString()}</p>
       <p className="text-gray-500">Date: {new Date(deposit.date).toLocaleDateString()}</p>
+      <p>{deposit.user_email}</p>
       <button
         onClick={() => onConfirm(deposit.id)}
         disabled={!deposit.pending}

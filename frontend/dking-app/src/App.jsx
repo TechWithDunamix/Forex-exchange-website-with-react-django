@@ -24,6 +24,7 @@ import PlanPage from './pages/plansPage.jsx';
 import BuyPlanPage from './pages/buyplans.jsx';
 import RecPage from './pages/reciept.jsx';
 import Investments from './admin/investments.jsx';
+import SettingsPage from './admin/settings.jsx';
 
 const isAuth = localStorage.getItem("token");
 
@@ -87,6 +88,7 @@ const isAdmin = localStorage.getItem("admin_token")
           <Route path='/admin' element={isAdmin ? <AdminHome /> : <AdminLoginForm />} />
           <Route path='/admin/plans' element={isAdmin ? <AdminPlans /> : <AdminLoginForm />} />
           <Route path='/admin/investments' element={isAdmin ? <Investments /> : <AdminLoginForm />} />
+          <Route path='/admin/settings' element={isAdmin ? <SettingsPage /> : <AdminLoginForm />} />
 
           <Route path='/admin/login' element={<AdminLoginForm />} />
           

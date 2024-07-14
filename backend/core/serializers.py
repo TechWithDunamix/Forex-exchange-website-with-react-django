@@ -110,6 +110,7 @@ class DepositSerializer(serializers.ModelSerializer):
 			"user":{"read_only":True},
 			'transaction':{"read_only":True}
 		}
+	
 	def get_pending(self,obj):
 		return obj.pending
 	def validate_amount(self,value):

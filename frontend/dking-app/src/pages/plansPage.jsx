@@ -14,7 +14,7 @@ const PlanPage = () => {
 
   const fetchPlans = async () => {
     try {
-      const response = await callMainApi('/admin/plans/');
+      const response = await callMainApi('/plans');
       if (response.data) {
         setPlans(response.data);
       } else {

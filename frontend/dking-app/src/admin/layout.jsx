@@ -13,7 +13,7 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className={`bg-gray-800 text-white ${collapsed ? 'w-16' : 'w-64'} transition-all duration-300`}>
+      <div className={`bg-gray-800 text-white ${collapsed ? 'w-16' : 'w-full md:w-64'} transition-all duration-300`}>
         <div className="p-4 flex items-center justify-between">
           <span className="text-xl font-semibold">{collapsed ? 'A' : 'Admin'}</span>
           <button onClick={toggleCollapse}>

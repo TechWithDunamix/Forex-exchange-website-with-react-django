@@ -17,6 +17,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.core.mail import send_mail
 from rest_framework.views import APIView
+from .models import AdminPlans
+from .serializers import AdminPlanSerializer
 class UserSignup(generics.GenericAPIView):
 	serializer_class = UserSerializer
 
@@ -264,4 +266,10 @@ class InvestmentView(generics.GenericAPIView):
             
         
  
-	
+class PlanView(generics.GenericAPIView):
+    serializer_class = AdminPlanSerializer
+    
+    def get(self,request,*args,**kwargs):
+        obj:object = AdminPlans.objects.all()
+        serializer  = self.get_serializer_class()(obj,many = True)
+        return Response(serializer.data)

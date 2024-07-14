@@ -39,7 +39,7 @@ const AdminWIthdrawalsPage = () => {
   return (
     <AdminLayout>
       <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Deposits</h1>
+        <h1 className="text-2xl font-bold mb-4">Withdrawals</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {deposits && deposits.map((deposit) => (
             <DepositCard key={deposit.id} deposit={deposit} onConfirm={handleConfirm} />

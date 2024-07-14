@@ -48,6 +48,7 @@ const Investments = () => {
                 <Card title={investment.name} bordered={false} className='border-2'>
                   <p>Price: ${investment.price.toLocaleString()}</p>
                   <p className="text-green-800">Started on: {investment.start}</p>
+                  <p className='text-slate-400'>{investment.user}</p>
                   <p className='text-slate-600 font-extrabold mt-5'>Features:</p>
                   
                   {/* <DeleteOutlined

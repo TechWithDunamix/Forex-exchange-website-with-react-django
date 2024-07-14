@@ -63,6 +63,10 @@ class Investment(models.Model):
 	start = models.DateField(auto_now=True)
 	end = models.DateField(auto_now=True)
 	name = models.CharField(max_length = 450)
+ 	
+	@property
+	def get_user(self):
+		return self.user.email
 
 
 

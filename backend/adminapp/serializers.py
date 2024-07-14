@@ -29,7 +29,11 @@ class WithdrawalSerializer(serializers.ModelSerializer):
         model = Withdrawal
         fields = '__all__'
     def get_pending(self,obj):
-        return obj.pending        
+        return obj.pending
+    def to_representation(self,obj,*args, **kwargs):
+        data = super().to_representation(obj)
+        data['user_email'] = obj.user.email
+        return data      
     
 
 class DepositSerializer(serializers.ModelSerializer):
@@ -41,3 +45,7 @@ class DepositSerializer(serializers.ModelSerializer):
         
     def get_pending(self,obj):
         return obj.pending
+    def to_representation(self,obj,*args, **kwargs):
+        data = super().to_representation(obj)
+        data['user_email'] = obj.user.email
+        return data
