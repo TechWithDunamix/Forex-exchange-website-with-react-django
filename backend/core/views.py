@@ -1,8 +1,10 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
+from django.urls import reverse_lazy
 from .serializers import  (UserSerializer,
 						   LoginSerializer,ProfileEditSerializer,
 						   OTPSerializer,WithdrawalSerializer,DepositSerializer,
-						   TransactionSerializer)
+						   TransactionSerializer,InvestmentSerializer,AdminPlans)
+from .models import Investment
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import User,OTP,Withdrawal,Transaction,Deposit
@@ -14,6 +16,7 @@ from .utils import Authenticator
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.core.mail import send_mail
+from rest_framework.views import APIView
 class UserSignup(generics.GenericAPIView):
 	serializer_class = UserSerializer
 
@@ -25,13 +28,47 @@ class UserSignup(generics.GenericAPIView):
 		serializer = self.get_serializer_class()(data = request.data)
 		if serializer.is_valid():
 			user = serializer.save()
+			code = get_random_string(6,allowed_chars=['0','1','2','3','4','5','6','7','8','9'])
+			otp = OTP.objects.create(user = user,code = code,purpose='account-activation')
 			token,_ = Token.objects.get_or_create(user = user)
+			url = request.build_absolute_uri(reverse_lazy("user-activate",kwargs = {"id":otp.id}))
+			print(url+"?code="+otp.code)
+			body = f'''Welcome to Ex-change \n 
+				click the link too activate your account \n 
+				{url+"?code="+otp.code}
+       			'''
+			send_mail('User Activation Main',
+             body,from_email='exchange7@gmail.com',recipient_list=[user.email])
 			response = serializer.data 
 			response['token'] = token.key
 			return Response(response,status = status.HTTP_201_CREATED)
 		return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
-
-
+	
+ 
+class ActivateUserView(APIView):
+    def get_queryset(self):
+        return OTP.objects.filter(purpose='account-activation',deleted=False)
+		
+	
+    def get(self,request,id = None,*args,**kwargs):
+        try:
+            otp = self.get_queryset().get(id = id)
+        except OTP.DoesNotExist:
+            return redirect("https://ex-change.vercel.app/not-found")
+        
+        if otp.code == request.GET.get("code"):
+            otp.user.is_confirmed = True 
+            otp.deleted = True 
+            otp.save()
+            otp.user.save()
+            return redirect("https://ex-change.vercel.app/dashboard")
+        return redirect("https://ex-change.vercel.app/not-found")
+        
+            
+        
+        
+		
+     
 class LoginView(generics.GenericAPIView):
 	serializer_class = LoginSerializer
 
@@ -163,12 +200,13 @@ class DepositView(generics.GenericAPIView):
 			transaction = Transaction.objects.create(user = request.user,
 							transaction_type = 'Deposit',
 							amount = serializer.validated_data.get("amount"))
+
 			obj.transaction = transaction
 			obj.save()
 			request.user.total_deposit = request.user.total_deposit + serializer.validated_data.get("amount")
 			request.user.save()
 			return Response(serializer.data,status=status.HTTP_201_CREATED)
-
+		
 		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 	
 class TransactionView(generics.GenericAPIView):
@@ -202,3 +240,28 @@ class ForgotPassword(generics.GenericAPIView):
 		user.set_password(password)
 		user.save()
 		return Response({"detail":"success"},status=status.HTTP_200_OK)
+
+
+class InvestmentView(generics.GenericAPIView):
+    serializer_class = InvestmentSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated] 
+    
+    def post(self,request,id = None,*args,**kwargs):
+        obj = get_object_or_404(AdminPlans,id = id)
+        serializer = self.get_serializer_class()(data = request.data)
+        if serializer.is_valid():
+            data = serializer.data
+            Investment.objects.create(user = request.user, 
+                                  name = data.get("name"),
+                                  price =data.get("price"),
+                                  plan = obj)
+            trsx = Transaction.objects.create(user = request.user,pending = True,
+                                       amount = data.get("price"),transaction_type='Investment')
+            data.setdefault("trsx_code",trsx.trsx)
+            return Response(data)
+        return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
+            
+        
+ 
+	

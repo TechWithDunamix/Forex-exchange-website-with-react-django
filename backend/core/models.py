@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.utils.crypto import get_random_string
 import uuid
-
+import json
 class UserManager(BaseUserManager):
 	def create_user(self,email = None,username = None,password = None,country = None,referal_id = None,phone = None,**extra):
 		if not email:
@@ -30,6 +31,7 @@ class User(AbstractBaseUser):
 	date_joined = models.DateField(auto_now_add = True,null = True)
 	referal_id = models.CharField(max_length = 50,null = True,default = None)
 	is_active = models.BooleanField(default =True)
+	is_confirmed = models.BooleanField(default=False)
 	total_balance = models.IntegerField(default = 0)
 	total_bonuses = models.IntegerField(default = 0)
 	total_deposit = models.IntegerField(default = 0)
@@ -41,8 +43,22 @@ class User(AbstractBaseUser):
 
 	def __str__(self):
 		return self.email
-class Plan(models.Model):
+class AdminPlans(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,unique=True)
+    name = models.CharField(max_length=50)
+    price = models.IntegerField()
+    duration = models.CharField(max_length=560)
+    pir = models.IntegerField(default=5)
+    features = models.TextField()
+    def save(self,*args,**kwargs):
+        self.features = json.dumps(self.features)
+        super().save(*args,**kwargs)
+    def get_features(self):
+        return json.loads(self.features)
+		
+class Investment(models.Model):
 	user = models.ForeignKey(User,on_delete = models.CASCADE,related_name = 'plans')
+	plan = models.ForeignKey(AdminPlans, on_delete=models.CASCADE,related_name='plans')
 	price = models.IntegerField()
 	start = models.DateField(auto_now=True)
 	end = models.DateField(auto_now=True)
@@ -57,7 +73,7 @@ class Transaction(models.Model):
 	amount = models.PositiveIntegerField(default = 0)
 	transaction_type = models.CharField(max_length=50)
 	date = models.DateField(auto_now_add = True)
-
+	trsx  = models.CharField(max_length=50,default='code')
 	def __str__(self):
 		return f'{self.user.email} transaction on {self.date}'
 
@@ -65,7 +81,10 @@ class Transaction(models.Model):
 	@property
 	def user_name(self):
 		return self.user.email
-	
+	def save(self,*args,**kwargs):
+		self.trsx = get_random_string(6)
+		# self.save(*args,**kwargs)
+		return super().save(*args,**kwargs)
 class OTP(models.Model):
 	"""Model definition for OTP."""
 
@@ -123,3 +142,6 @@ class Deposit(models.Model):
 	@property
 	def pending(self):
 		return self.transaction.pending
+
+
+    

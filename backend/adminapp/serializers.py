@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import User, Plan, Transaction, OTP, Withdrawal, Deposit
+from core.models import User, Transaction, OTP, Withdrawal, Deposit
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,10 +11,6 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
-class PlanSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Plan
-        fields = '__all__'
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:

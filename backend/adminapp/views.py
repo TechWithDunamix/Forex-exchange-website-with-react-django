@@ -3,13 +3,45 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
-from core.models import User, Plan, Transaction, OTP, Withdrawal, Deposit
-from .serializers import UserSerializer, PlanSerializer, TransactionSerializer, OTPSerializer, WithdrawalSerializer, DepositSerializer
-class AdminHomeView(GenericAPIView):
+from core.models import User, Transaction, OTP, Withdrawal, Deposit
+from .serializers import UserSerializer, TransactionSerializer, OTPSerializer, WithdrawalSerializer, DepositSerializer
+from .middleware import AdminMixin
+from django.db.models import Sum
+from core.models import AdminPlans,Investment
+from .models import AdminUser
+from core.models import AdminPlans,Investment
+from core.serializers import AdminPlanSerializer,InvestmentSerializer
+class AdminLogin(APIView):
+    def post(self,request,*args,**kwargs):
+        print(request.data)
+        user = get_object_or_404(AdminUser,email = request.data.get("email"))
+        if user.password == request.data.get("password"):
+            return Response({"token":user.token})
+        return Response({"error":"invalid login credentials"},status = status.HTTP_400_BAD_REQUEST)
+    
+        
+class AdminHomeView(AdminMixin,GenericAPIView):
     
     def get(self,request,*args,**kwargs):
-        pass
-class UserListCreateView(GenericAPIView):
+        activated_users = User.objects.filter(is_confirmed=True).count()
+        non_activated_users = User.objects.filter(is_confirmed=False).count()
+        total_deposits = Deposit.objects.aggregate(Sum("amount"))
+        total_withdrawal = Withdrawal.objects.aggregate(Sum("amount"))
+        pending_withdrawals = Withdrawal.objects.filter(transaction__pending = True).count()
+        approved_withdrawals = Withdrawal.objects.filter(transaction__pending = False).count()
+        
+        pending_deposits = Deposit.objects.filter(transaction__pending = True).count()
+        approved_deposits = Deposit.objects.filter(transaction__pending = False).count()
+        plan = AdminPlans.objects.all().count()
+        investment = Investment.objects.all().count()
+        data = locals()
+        del data['self']
+        del data['request']
+        
+        return Response(data)
+        
+        
+class UserListCreateView(AdminMixin,GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -25,7 +57,7 @@ class UserListCreateView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserDetailView(GenericAPIView):
+class UserDetailView(AdminMixin,GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -59,57 +91,7 @@ class UserDetailView(GenericAPIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class PlanListCreateView(GenericAPIView):
-    queryset = Plan.objects.all()
-    serializer_class = PlanSerializer
-
-    def get(self, request, *args, **kwargs):
-        plans = self.get_queryset()
-        serializer = self.get_serializer(plans, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class PlanDetailView(GenericAPIView):
-    queryset = Plan.objects.all()
-    serializer_class = PlanSerializer
-
-    def get_object(self, pk):
-        try:
-            return Plan.objects.get(pk=pk)
-        except Plan.DoesNotExist:
-            return None
-
-    def get(self, request, pk, *args, **kwargs):
-        plan = self.get_object(pk)
-        if not plan:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = self.get_serializer(plan)
-        return Response(serializer.data)
-
-    def put(self, request, pk, *args, **kwargs):
-        plan = self.get_object(pk)
-        if not plan:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = self.get_serializer(plan, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, *args, **kwargs):
-        plan = self.get_object(pk)
-        if not plan:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        plan.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-class TransactionListCreateView(GenericAPIView):
+class TransactionListCreateView(AdminMixin,GenericAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 
@@ -125,7 +107,7 @@ class TransactionListCreateView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TransactionDetailView(GenericAPIView):
+class TransactionDetailView(AdminMixin,GenericAPIView):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 
@@ -159,7 +141,7 @@ class TransactionDetailView(GenericAPIView):
         transaction.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class OTPListCreateView(GenericAPIView):
+class OTPListCreateView(AdminMixin,GenericAPIView):
     queryset = OTP.objects.all()
     serializer_class = OTPSerializer
 
@@ -175,7 +157,7 @@ class OTPListCreateView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class OTPDetailView(GenericAPIView):
+class OTPDetailView(AdminMixin,GenericAPIView):
     queryset = OTP.objects.all()
     serializer_class = OTPSerializer
 
@@ -209,7 +191,7 @@ class OTPDetailView(GenericAPIView):
         otp.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class WithdrawalListCreateView(GenericAPIView):
+class WithdrawalListCreateView(AdminMixin,GenericAPIView):
     queryset = Withdrawal.objects.all()
     serializer_class = WithdrawalSerializer
 
@@ -227,7 +209,7 @@ class WithdrawalListCreateView(GenericAPIView):
         obj.transaction.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class WithdrawalDetailView(GenericAPIView):
+class WithdrawalDetailView(AdminMixin,GenericAPIView):
     queryset = Withdrawal.objects.all()
     serializer_class = WithdrawalSerializer
 
@@ -261,7 +243,7 @@ class WithdrawalDetailView(GenericAPIView):
         withdrawal.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class DepositListCreateView(GenericAPIView):
+class DepositListCreateView(AdminMixin,GenericAPIView):
     queryset = Deposit.objects.all()
     serializer_class = DepositSerializer
 
@@ -278,7 +260,7 @@ class DepositListCreateView(GenericAPIView):
         obj.transaction.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class DepositDetailView(GenericAPIView):
+class DepositDetailView(AdminMixin,GenericAPIView):
     queryset = Deposit.objects.all()
     serializer_class = DepositSerializer
 
@@ -312,3 +294,34 @@ class DepositDetailView(GenericAPIView):
         deposit.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class AdminPlanView(AdminMixin,GenericAPIView):
+    serializer_class = AdminPlanSerializer
+    
+    def get_queryset(self):
+        return AdminPlans.objects.all()
+    
+    def get(self,request,*args,**kwargs):
+        serializer = self.get_serializer_class()(self.get_queryset(),many = True)
+        return Response(serializer.data)
+    
+    def post(self,request,*args, **kwargs):
+        serializer = self.get_serializer_class()(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self,request,id = None,*args,**kwargs):
+        plan = get_object_or_404(self.get_queryset(),id = id)
+        plan.delete()
+        return Response({"success":"Success"})
+        
+        
+class AdminInvesmentView(AdminMixin,GenericAPIView):
+    serializer_class = InvestmentSerializer
+    def get(self,request,*args,**kwargs):
+        obj = Investment.objects.all()
+        serializer = self.get_serializer_class()(obj,many = True)
+        return Response(serializer.data)
+        

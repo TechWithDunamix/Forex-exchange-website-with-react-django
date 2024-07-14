@@ -1,6 +1,7 @@
 from .models import User , Transaction,OTP,Withdrawal,Deposit
 from rest_framework import serializers
 from django.utils.crypto import get_random_string
+from .models import AdminPlans,Investment
 class TransactionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Transaction
@@ -102,7 +103,6 @@ class WithdrawalSerializer(serializers.ModelSerializer):
 
 class DepositSerializer(serializers.ModelSerializer):
 	pending = serializers.SerializerMethodField(read_only = True)
-	
 	class Meta:
 		model = Deposit
 		fields = '__all__'
@@ -113,6 +113,46 @@ class DepositSerializer(serializers.ModelSerializer):
 	def get_pending(self,obj):
 		return obj.pending
 	def validate_amount(self,value):
-		if value < 200:
+		if value < 100:
 			raise serializers.ValidationError("You can't deposit less than $200")
-		return value
+		return value 
+
+class AdminPlanSerializer(serializers.ModelSerializer):
+    features = serializers.ListField(
+        child=serializers.CharField(max_length=100)
+    )
+    class Meta:
+        model = AdminPlans
+        fields = '__all__'
+    def validate_features(self,value):
+        return value
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['features'] = instance.get_features()
+        return representation
+    
+class InvestmentSerializer(serializers.ModelSerializer):
+    
+    def to_representation(self,obj,*args,**kwargs):
+        data = super().to_representation(obj,*args,**kwargs)
+        data['user'] = obj.user.email
+        return data
+    class Meta:
+        model = Investment
+        fields = ['name','price','start']
+        
+        extra_kwargs = {
+			"user":{
+				"required":False 
+			},
+			"plans":{
+				"required":False
+			},
+			"name":{
+				"required":True
+			},
+   			"price":{
+				"required":True
+			}
+
+		}

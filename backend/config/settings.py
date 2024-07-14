@@ -87,21 +87,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
+# Database 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# settings.py
-
-# settings.py
-
-DATABASES = {
+DEV = False
+if DEV:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'defaultdb',
@@ -170,3 +167,17 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'exhchange7@gmail.com'
 EMAIL_HOST_PASSWORD = 'oanvnjgsgkxiowae'
 DEFAULT_FROM_EMAIL = 'exhchange7@gmail.com'
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    
+    'HTTP-ADMIN-TOKEN',  # Your custom header
+]
