@@ -51,9 +51,6 @@ const DashboardLayout = ({ children }) => {
           <a className='p-3 bg-slate-400 rounded-lg my-5 flex items-center' style={{ fontFamily: "Rubik" }}>
             <ProfileOutlined className='mr-2' /> Plans
           </a>
-          <a href='/profile' className='p-3 bg-slate-400 rounded-lg my-5 flex items-center' style={{ fontFamily: "Rubik" }}>
-            <UserOutlined className='mr-2' /> Profile
-          </a>
         </div>
       </div>
       <div className='w-full bg-slate-100 md:ml-[20%]'>
@@ -86,12 +83,10 @@ const DashboardLayout = ({ children }) => {
         <a href = '/history' className='block p-3 text-green-500 my-5 flex items-center' style={{ fontFamily: "Rubik" }}>
           <HistoryOutlined className='mr-2' /> Transaction History
         </a>
-        <a className='block p-3 text-green-500 my-5 flex items-center' style={{ fontFamily: "Rubik" }}>
+        <a href='/plans' className='block p-3 text-green-500 my-5 flex items-center' style={{ fontFamily: "Rubik" }}>
           <ProfileOutlined className='mr-2' /> Plans
         </a>
-        <a href='/profile' className='block p-3 text-green-500 my-5 flex items-center' style={{ fontFamily: "Rubik" }}>
-          <UserOutlined className='mr-2' /> Profile
-        </a>
+        
       </Drawer>
     </div>
   );

@@ -1,0 +1,26 @@
+/* App.css */
+
+#google_translate_element {
+    position: absolute;
+    bottom: 10px; 
+    left: 10px; /* Adjust right position */
+    z-index: 1000; /* Ensure it's on top of other elements */
+    background-color: white; /* Background color */
+    padding: 5px; /* Padding for some spacing */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for better visibility */
+  }
+  
+  .translate-widget {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+  } 
+  body {
+    top: 0 !important;
+  }
+  

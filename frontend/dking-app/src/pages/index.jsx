@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from '../assets/images/laptop.png';
 import Image2 from '../assets/images/btc-image2.jfif';
-import Layout from '../components/layouts.jsx'
-import { Carousel } from 'antd'
-import { KeyOutlined, SecurityScanOutlined, CreditCardOutlined, ThunderboltOutlined, AreaChartOutlined, CheckOutlined } from '@ant-design/icons'
+import Layout from '../components/layouts.jsx';
+import { message } from 'antd';
+import { callMainApi } from '../utils';
+import { KeyOutlined, SecurityScanOutlined, CreditCardOutlined, ThunderboltOutlined, AreaChartOutlined, CheckOutlined } from '@ant-design/icons';
 
 const HomePage = () => {
-  const isAuth = localStorage.getItem("token")
+  const [plans, setPlans] = useState([]);
+  const isAuth = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetchPlans();
+  }, []);
+
+  const fetchPlans = async () => {
+    try {
+      const response = await callMainApi('/admin/plans/');
+      if (response.data) {
+        setPlans(response.data);
+      } else {
+        message.error(response.error || 'Failed to fetch plans');
+      }
+    } catch (error) {
+      console.error('Error fetching plans:', error);
+      message.error('Error fetching plans');
+    }
+  };
+
   return (
     <Layout>
       <div className='min-h-[60vh] md:min-h-[60vh] flex flex-col md:flex-row items-center bg-slate-100 p-10'>
@@ -110,6 +131,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
       <div className='flex flex-col p-2 justify-center items-center bg-white'>
         <div className='text-center'>
           <h1 className='text-[2rem] text-green-900' style={{ fontFamily: 'Roboto' }}>Our Investment Packages</h1>
@@ -117,50 +139,24 @@ const HomePage = () => {
         </div>
 
         <div className='flex flex-col md:flex-row justify-center items-center'>
-          {/* Plan 1 */}
-          <div className='shadow-md shadow-green-200 px-5 p-5 rounded-[5px] w-[300px] border-2 mx-5 my-2'>
-            <h1 style={{ fontFamily: 'Roboto' }} className='text-green-900 bg-green-200 p-4 rounded-t-[45px] rounded-r-[45px]'>Starter</h1>
-            <h1 style={{ fontFamily: 'Roboto' }} className='text-black font-bold text-[2rem] my-2'>$100</h1>
-            <p className='font-light text-slate-500 mb-2'>1 Month </p>
-            <hr />
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> Min. Possible deposit: $900</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> Max. Possible deposit: $1000 </p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $10 Minimum return</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $20 Maximum return</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $10 Gift Bonus</p>
-
-            <a className='px-4 py-3 bg-green-600 text-white rounded-[5px]'>Buy Now</a>
-          </div>
-          {/* Plan 2 */}
-          <div className='shadow-md shadow-green-200 px-5 p-5 rounded-[5px] w-[300px] border-2 mx-5 my-2'>
-            <h1 style={{ fontFamily: 'Roboto' }} className='text-green-900 bg-green-200 p-4 rounded-t-[45px] rounded-r-[45px]'>Gold Plan</h1>
-            <h1 style={{ fontFamily: 'Roboto' }} className='text-black font-bold text-[2rem] my-2'>$5000</h1>
-            <p className='font-light text-slate-500 mb-2'>1 Month </p>
-            <hr />
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> Min. Possible deposit: $4500</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> Max. Possible deposit: $5000 </p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $20 Minimum return</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $40 Maximum return</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $50 Gift Bonus</p>
-
-            <a className='px-4 py-3 bg-green-600 text-white rounded-[5px]'>Buy Now</a>
-          </div>
-          {/* Plan 3 */}
-          <div className='shadow-md shadow-green-200 px-5 p-5 rounded-[5px] w-[300px] border-2 mx-5 my-2'>
-            <h1 style={{ fontFamily: 'Roboto' }} className='text-green-900 bg-green-200 p-4 rounded-t-[45px] rounded-r-[45px]'>Platinum Plan</h1>
-            <h1 style={{ fontFamily: 'Roboto' }} className='text-black font-bold text-[2rem] my-2'>$10000</h1>
-            <p className='font-light text-slate-500 mb-2'>1 Month </p>
-            <hr />
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> Min. Possible deposit: $9500</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> Max. Possible deposit: $10000 </p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $30 Minimum return</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $60 Maximum return</p>
-            <p className='text-slate-500 my-3'><CheckOutlined className='text-green-500' /> $100 Gift Bonus</p>
-
-            <a className='px-4 py-3 bg-green-600 text-white rounded-[5px]'>Buy Now</a>
-          </div>
+          {plans.map((plan) => (
+            <div key={plan.id} className='shadow-md shadow-green-200 px-5 p-5 rounded-[5px] w-[300px] border-2 mx-5 my-2'>
+              <h1 style={{ fontFamily: 'Roboto' }} className='text-green-900 bg-green-200 p-4 rounded-t-[45px] rounded-r-[45px]'>{plan.name}</h1>
+              <h1 style={{ fontFamily: 'Roboto' }} className='text-black font-bold text-[2rem] my-2'>${plan.price}</h1>
+              <p className='font-light text-slate-500 mb-2'>{plan.duration}</p>
+              <hr />
+              <div className='mb-20 text-slate-600'>
+              {plan.features.map(f => {
+                return <p><CheckOutlined />{f}</p>
+              })}
+              </div>
+              <a href={`/buy-plan?id=${plan.id}&int=${plan.pir}&period=${plan.duration}&name=${plan.name}&amount=${plan.price}`} className='px-4 py-3 bg-green-600 text-white rounded-[5px]'>Buy Now</a>
+            </div>
+            
+          ))}
         </div>
       </div>
+
       <div className='mx-8 md:mx-28 bg-green-800 text-white md:flex p-5 rounded-r-[5px] rounded-t-[5px]'>
         <div>
           <h1 style={{ fontFamily: 'Roboto' }} className='text-[2.2rem]'>The Better Way to Trade & Invest</h1>

@@ -115,6 +115,7 @@ const SignupForm = () => {
               name='referal_id'
               onChange={handleChange}
               placeholder="Referal Code"
+              value={localStorage.getItem("ref")}
 
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-green-600"
             />

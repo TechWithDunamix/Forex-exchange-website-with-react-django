@@ -1,7 +1,8 @@
 // src/components/Layout.jsx
 import React from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined, UserOutlined, SettingOutlined, KeyOutlined } from '@ant-design/icons';
-import { ArrowDownOutlined ,ArrowUpOutlined} from '@ant-design/icons';
+import { BarChartOutlined,ArrowDownOutlined ,ArrowUpOutlined,FullscreenOutlined} from '@ant-design/icons';
+
 const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = React.useState(true);
 
@@ -23,7 +24,7 @@ const AdminLayout = ({ children }) => {
           <ul>
             <li className="p-4 hover:bg-gray-700">
               <HomeOutlined className="inline-block mr-2" />
-              <span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Home</span>
+              <a href='/admin'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Home</span></a>
             </li>
             <li className="p-4 hover:bg-gray-700">
               <UserOutlined className="inline-block mr-2" />
@@ -47,7 +48,17 @@ const AdminLayout = ({ children }) => {
         
             <li className="p-4 hover:bg-gray-700">
               <KeyOutlined className="inline-block mr-2" />
-              <a href='/admin/withdrawals'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>OTP</span></a>
+              <a href='/admin/otps'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>OTP</span></a>
+            </li>
+
+            <li className="p-4 hover:bg-gray-700">
+              <FullscreenOutlined className="inline-block mr-2" />
+              <a href='/admin/plans'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Plans</span></a>
+            </li>
+
+            <li className="p-4 hover:bg-gray-700">
+              <BarChartOutlined className="inline-block mr-2" />
+              <a href='/admin/investments'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Plans</span></a>
             </li>
         
 

@@ -1,3 +1,4 @@
+import { CopyOutlined } from '@ant-design/icons';
 import DashboardLayout from '../components/dashboard_layout.jsx'
 import { ArrowUpOutlined, ArrowDownOutlined} from '@ant-design/icons';
 import {useState,useEffect} from'react'
@@ -61,7 +62,7 @@ const Dashboard = () =>{
 					<div>
 						<p className='text-white text-[1.4rem] text-[#d59704]' style={{fontFamily:"Rubik"}}>Total Deposit </p>
 						<p className='text-slate-400 font-italic'>
-							${userData ? userData.total_deposit : 
+							${userData ? userData.total_deposit.toLocaleString() : 
 
 								<div className='mt-5 mr-20 p-2 animate-spin-infinte border-t-4 border-green-500 w-[20px] h-[20px] rounded-[200px]'></div>}
 
@@ -71,7 +72,7 @@ const Dashboard = () =>{
 						<p className='text-white text-[1.4rem] text-[#d59704]' style={{fontFamily:"Rubik"}}>Total Withdraw </p>
 						<p className='text-slate-400 font-italic'>
 							<p className='text-slate-400 font-italic'>
-							${userData ? userData.total_withdraw : 
+							${userData ? userData.total_withdraw.toLocaleString() : 
 
 								<div className='mt-5 mr-20 p-2 animate-spin-infinte border-t-4 border-green-500 w-[20px] h-[20px] rounded-[200px]'></div>}
 
@@ -84,7 +85,7 @@ const Dashboard = () =>{
 						<p className='text-white text-[1.4rem] text-[#d59704]' style={{fontFamily:"Rubik"}}>Total Balance </p>
 						<p className='text-slate-400 font-italic'>
 						<p className='text-slate-400 font-italic'>
-							${userData ? userData.total_balance : 
+							${userData ? userData.total_balance.toLocaleString() : 
 
 								<div className='mt-5 mr-20 p-2 animate-spin-infinte border-t-4 border-green-500 w-[20px] h-[20px] rounded-[200px]'></div>}
 
@@ -98,8 +99,8 @@ const Dashboard = () =>{
 				<div className={`h-[200px] w-full bg-slate-100 my-10 rounded-md block 
 				md:flex justify-center md:px-20 items-center p-3 border-2 shadow-lg`}>
 					<div className='text-center'>
-						<p style={{fontFamily:"Rubik"}} className='mb-5 text-slate-500'>You dont have a plan </p>
-						<a style={{fontFamily:"Rubik"}} className='p-4 bg-green-600 mt-5 rounded-lg 
+						<p style={{fontFamily:"Rubik"}} className='mb-5 text-slate-500'>Start making it  </p>
+						<a href = '/plans' style={{fontFamily:"Rubik"}} className='p-4 bg-green-600 mt-5 rounded-lg 
 						text-white cursor-pointer shadow-md shadow-green-900'>Buy a plan </a>
 					</div>
 
@@ -123,8 +124,18 @@ const Dashboard = () =>{
 				md:block p-3`}>
 					<h1 style={{fontFamily:"Rubik"}}>Refer us and earn </h1 >
 					<p  style={{fontFamily:"Rubik"}} className='mt-2 text-slate-400'>Use the below link to invite your friends.</p>
-					<div  style={{fontFamily:"Rubik"}} className='md:w-[500px] mt-2 text-slate-400 bg-slate-300 py-4 px-2 rounded-lg'>
-					<p className='text-[0.5rem] md:text-[1rem]'>https://currencymarket.store/en//ref/dunamis@admin.com</p>
+					<div  style={{fontFamily:"Rubik"}}>
+						<div className="flex items-center mt-2">
+						<p className="bg-slate-300 rounded-lg border-2 p-4 text-xs w-full overflow-x-auto">
+						https://ex-change.vercel.app?referal=
+						</p>
+						<button
+						onClick={() => copyToClipboard('btcAddress')}
+						className="ml-2 text-blue-500 hover:text-blue-700"
+						>
+						<CopyOutlined />
+						</button>
+						</div>
 					</div>
 
 				</div>

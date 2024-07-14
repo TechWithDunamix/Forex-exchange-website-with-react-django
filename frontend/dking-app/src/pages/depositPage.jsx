@@ -26,6 +26,7 @@ const DepositPage = () => {
       return;
     }
     message.error("An error occurred");
+    console.log(request)
     setIsLoading(false);
   };
 
