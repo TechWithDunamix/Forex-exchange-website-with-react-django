@@ -33,7 +33,7 @@ const AdminLayout = ({ children }) => {
             </li>
             <li className="p-4 hover:bg-gray-700">
               <SettingOutlined className="inline-block mr-2" />
-              <span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Settings</span>
+           <a href='/admin/settings'>   <span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Settings</span></a>
             </li>
 
             <li className="p-4 hover:bg-gray-700">

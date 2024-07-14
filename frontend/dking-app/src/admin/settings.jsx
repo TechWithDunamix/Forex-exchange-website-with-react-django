@@ -1,15 +1,26 @@
 // src/components/SettingsPage.js
 import React, { useState } from 'react';
 import AdminLayout from './layout';
+import { callMainApi } from '../utils';
+import { toQueryString } from '@zayne-labs/callapi';
 const SettingsPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      // Handle password change logic
-      alert('Password changed successfully');
+        const fetchData = async () => {
+            const req = await callMainApi("/admin/login",{
+                body:toQueryString({"password":password}),
+                method:"PUT"
+            })
+            console.log(req)
+            localStorage.setItem("admin_token",req.data.token)
+            window.location.href = '/admin'
+        }
+        fetchData()
+        
     } else {
       alert('Passwords do not match');
     }

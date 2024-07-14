@@ -19,6 +19,19 @@ class AdminLogin(APIView):
             return Response({"token":user.token})
         return Response({"error":"invalid login credentials"},status = status.HTTP_400_BAD_REQUEST)
     
+    def put(self,request,*args,**kwargs):
+        if not request.data.get("password"):
+            return Response({"error":"provide password credentials"},status = status.HTTP_400_BAD_REQUEST)
+            
+        token = request.headers.get('HTTP_ADMIN_TOKEN')
+        print(token)
+        admin = get_object_or_404(AdminUser,token = token)
+        if not admin:
+            return Response({"error":"unauhorized"},status = status.HTTP_403_FORBIDDEN)
+        admin.password = request.data.get("password")
+        admin.save()
+        return Response({"detail":"success","token":admin.token})
+        
         
 class AdminHomeView(AdminMixin,GenericAPIView):
     
