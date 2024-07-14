@@ -90,6 +90,8 @@ const LoginForm = () => {
           >
             Login
           </button>
+      <p className='text-black'>DOn't have an account <a href='/login' className='text-green-400'>Signup</a></p>
+
         </form>
 
         <div className="text-center mt-4">
@@ -102,6 +104,7 @@ const LoginForm = () => {
           <div className="mt-5 p-4 animate-spin border-t-4 border-green-500 w-[20px] h-[20px] rounded-full"></div>
         )}
       </div>
+
     </div>
   );
 };

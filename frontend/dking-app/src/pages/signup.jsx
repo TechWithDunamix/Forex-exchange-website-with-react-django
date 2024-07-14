@@ -126,9 +126,12 @@ const SignupForm = () => {
           >
             Sign Up
           </button>
+      <p className='text-black'>Already have an account <a href='/login' className='text-green-400'>Login</a></p>
+
         </form>
         {isLoading && <div className='mt-5 mr-20 p-4 animate-spin-infinte border-t-4 border-green-500 w-[20px] h-[20px] rounded-[200px]'></div>}
       </div>
+      {/* <p className='text-white'>Already have an account <a href='/login'>Login</a></p> */}
     </div>
   );
 };

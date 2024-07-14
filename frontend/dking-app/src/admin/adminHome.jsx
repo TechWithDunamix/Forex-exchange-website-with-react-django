@@ -9,6 +9,7 @@ const AdminHome = () => {
     useEffect(() => {
         const fetchData = async () => {
             const req = await callMainApi("/admin");
+            console.log(req)
             setData(req.data);  // Assuming the API response structure
         };
         fetchData();
