@@ -58,7 +58,7 @@ const AdminLayout = ({ children }) => {
 
             <li className="p-4 hover:bg-gray-700">
               <BarChartOutlined className="inline-block mr-2" />
-              <a href='/admin/investments'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Plans</span></a>
+              <a href='/admin/investments'><span className={`${collapsed ? 'hidden' : 'inline-block'}`}>Investments</span></a>
             </li>
         
 

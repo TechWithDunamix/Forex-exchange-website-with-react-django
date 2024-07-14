@@ -38,14 +38,14 @@ const AdminHome = () => {
                             <CustomCard
                                 icon={<DollarCircleOutlined className="text-3xl" />}
                                 title="Total Deposits"
-                                value={`$${data.total_deposits.amount__sum.toLocaleString()}`}
+                                value={`$${data.total_deposits.amount__sum && data.total_deposits.amount__sum.toLocaleString()}`}
                                 bgColor="bg-blue-200"
                                 cardStyle="sm:h-28 md:h-32 border-2 border-blue-400"
                             />
                             <CustomCard
                                 icon={<DollarCircleOutlined className="text-3xl" />}
                                 title="Total Withdrawals"
-                                value={`$${data.total_withdrawal.amount__sum.toLocaleString()}`}
+                                value={`$${data.total_withdrawal.amount__sum && data.total_withdrawal.amount__sum.toLocaleString()}`}
                                 bgColor="bg-yellow-200"
                                 cardStyle="sm:h-28 md:h-32 border-2 border-yellow-400"
                             />
