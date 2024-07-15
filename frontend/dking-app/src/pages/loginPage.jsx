@@ -90,7 +90,7 @@ const LoginForm = () => {
           >
             Login
           </button>
-      <p className='text-black'>DOn't have an account <a href='/login' className='text-green-400'>Signup</a></p>
+      <p className='text-black'>DOn't have an account <a href='/signup' className='text-green-400'>Signup</a></p>
 
         </form>
 
