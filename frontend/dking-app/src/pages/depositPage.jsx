@@ -7,7 +7,8 @@ import { CopyOutlined } from "@ant-design/icons";
 
 const btcAddress = "bc1q70luh4hg3afvjzgr8mf03l9f0u2r4vay4wry7q";
 const usdtAddress = "TLfGBHYrw62uWbLpidhEDZqZNkhy45vKsY";
-
+const etherum = "0xbe617e224d5d192e2945d8a94dD1556270DE5c97"
+const usdt2 = "0xbe617e224d5d192e2945d8a94dD1556270DE5c97"
 const DepositPage = () => {
   const [amount, setAmount] = useState(0);
   const [errors, setErrors] = useState({});
@@ -79,6 +80,18 @@ const DepositPage = () => {
             </p>
             <button
               onClick={() => copyToClipboard(usdtAddress)}
+              className="ml-2 text-blue-500 hover:text-blue-700"
+            >
+              <CopyOutlined />
+            </button>
+          </div>
+          <p className="text-slate-500 mt-8">Usdt (ERC20)  Wallet Address</p>
+          <div className="flex items-center mt-2">
+            <p className="bg-slate-300 rounded-lg border-2 p-4 text-xs w-full overflow-x-auto">
+              {usdt2}
+            </p>
+            <button
+              onClick={() => copyToClipboard(btcAddress)}
               className="ml-2 text-blue-500 hover:text-blue-700"
             >
               <CopyOutlined />
