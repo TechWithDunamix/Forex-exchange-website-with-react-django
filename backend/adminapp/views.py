@@ -11,6 +11,7 @@ from core.models import AdminPlans,Investment
 from .models import AdminUser
 from core.models import AdminPlans,Investment
 from core.serializers import AdminPlanSerializer,InvestmentSerializer
+from django.core.mail import send_mail
 class AdminLogin(APIView):
     def post(self,request,*args,**kwargs):
         print(request.data)
@@ -271,6 +272,12 @@ class DepositListCreateView(AdminMixin,GenericAPIView):
         obj.transaction.pending = False 
         obj.save()
         obj.transaction.save()
+        body = f'''Dear user \n 
+				we have confirmed your deposit \n 
+
+       			'''
+        send_mail('Deposit confirmation',
+             body,from_email='exchange7@gmail.com',recipient_list=[request.user.email])
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class DepositDetailView(AdminMixin,GenericAPIView):
