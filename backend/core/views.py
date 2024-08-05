@@ -12,7 +12,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token 
 # from django.contrib.auth import authenticate
 from django.utils.crypto import get_random_string
-from .utils import Authenticator
+from .utils import Authenticator,send_deposit_confirmation_email,send_withdrawal_confirmation_email
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.core.mail import send_mail
@@ -147,7 +147,7 @@ class OTPView(generics.GenericAPIView):
 			send_mail(
 			'OTP verify from Ex chabge',
 			body,
-			'exhange.app@gmail.com',  # From email
+			'exhchange@gmail.com',  # From email
 			[request.user.email],  # To email
 			fail_silently=False,
 			)

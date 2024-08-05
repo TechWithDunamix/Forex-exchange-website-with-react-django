@@ -42,7 +42,7 @@ def send_withdrawal_confirmation_email(to_email, username, amount, account_url):
     email = EmailMultiAlternatives(
         'Withdrawal Confirmed',
         text_content,
-        'exchange7@gmail.com',
+        'exhchange7@gmail.com',
         [to_email]
     )
     email.attach_alternative(html_content, "text/html")
