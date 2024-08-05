@@ -232,7 +232,7 @@ class TransactionView(generics.GenericAPIView):
 
 class ForgotPassword(generics.GenericAPIView):
 	serializer_class = LoginSerializer
-	authentication_classes [TokenAuthentication]
+	authentication_classes = [TokenAuthentication]
 	permission_classes = [AllowAny]
 	def post(self,request,*args,**kwargs):
 		email = request.data.get("email")
