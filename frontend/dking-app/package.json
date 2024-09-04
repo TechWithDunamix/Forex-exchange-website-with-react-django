@@ -12,7 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@heroicons/react": "^2.1.4",
-    "@zayne-labs/callapi": "^0.3.0",
+    "@zayne-labs/callapi": "^0.7.7",
     "antd": "^5.18.3",
     "i18next": "^23.11.5",
     "i18next-browser-languagedetector": "^8.0.0",
